@@ -55,7 +55,7 @@ Focuses on setting up and managing a PostgreSQL database to store app details (a
         "app_name": "App One",
         "version": "1.0",
         "description": "This is the first app."
-    }
+        }
     ,
     {
         "app_name": "App Two",
