@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    volumes :
+      - .:/api_image
+    ports:
+      [8000:8000]
+    image: app:api_image 
+    container_name: Api_container
+    entrypoint: ["./entrypoint.sh"]
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes: 
+      - ./data/db:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: api_postgre_db

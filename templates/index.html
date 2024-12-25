@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <style>
+        /* Dark Theme */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #ffcc00;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        button {
+            background-color: #333;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        /* Modal Style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #333;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            color: #e0e0e0;
+        }
+
+        .modal form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #222;
+            color: #e0e0e0;
+            border: 1px solid #888;
+        }
+
+        .modal form button {
+            background-color: #ffcc00;
+            color: #121212;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .modal form button:hover {
+            background-color: #ff9900;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffcc00;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome Users ... </h1>
+    <button ><a href="{% url 'add_app' %}">Add App</a></button><br>
+    <button id="getAppBtn">Get App</button><br>
+    <button id="deleteAppBtn">Delete App</button><br>
+
+    <!-- Modal for inputting ID -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Enter App ID</h2>
+            <form id="appForm">
+                <input type="text" id="appIdInput" name="appId" placeholder="Enter App ID..." required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("modal");
+
+        // Get the buttons that trigger the modal
+        var getAppBtn = document.getElementById("getAppBtn");
+        var deleteAppBtn = document.getElementById("deleteAppBtn");
+
+        // Get the <span> element that closes the modal
+        var closeBtn = document.getElementsByClassName("close")[0];
+
+        // Variable to track which button was clicked
+        var actionType = '';
+
+        // When the user clicks the Get App button, open the modal and set actionType
+        getAppBtn.onclick = function() {
+            actionType = 'get';
+            modal.style.display = "block";
+        }
+
+        // When the user clicks the Delete App button, open the modal and set actionType
+        deleteAppBtn.onclick = function() {
+            actionType = 'delete';
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        var form = document.getElementById("appForm")
+        // Handle form submission
+        form.addEventListener('submit' ,(event =>{
+            event.preventDefault(); // Prevent default form submission
+            var appId = document.getElementById("appIdInput").value;
+            if (appId) {
+                // Construct the URL based on the actionType
+                var url = '';
+                if (actionType === 'get') {
+                    url = "/get-app/" + appId; // Redirection for Get App
+                } else if (actionType === 'delete') {
+                    url = "/delete-app/" + appId; // Redirection for Delete App
+                }
+
+                // Redirect to the corresponding URL
+                window.location.href = url;
+                form.reset()
+                modal.style.display = "none"; // Close modal
+            } else {
+                alert("Please enter a valid App ID.");
+            }
+        })) 
+
+        // Close the modal if the user clicks anywhere outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
