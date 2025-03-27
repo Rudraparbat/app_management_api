@@ -15,8 +15,8 @@ jobs:
       matrix:
         python-version: [3.13.2]
 
-    db:
-      postgres:
+    services:
+      db:
         image: postgres:latest
         env:
           POSTGRES_DB: test_db
